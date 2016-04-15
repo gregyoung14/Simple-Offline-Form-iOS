@@ -33,8 +33,11 @@
     
     NSMutableArray *array = [[NSMutableArray alloc]initWithArray:[[NSUserDefaults standardUserDefaults]valueForKey:@"data_form"]];
     
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:array options:0 error:nil];
+    NSString* jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+
     NSString *emailTitle = @"Form Export";
-    NSString *messageBody = [array description];
+    NSString *messageBody = jsonString;
     NSArray *toRecipents = [NSArray arrayWithObject:@"greg@rbm.tv"];
     
     MFMailComposeViewController *mc = [[MFMailComposeViewController alloc] init];

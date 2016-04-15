@@ -24,6 +24,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
+                                   initWithTarget:self
+                                   action:@selector(dismissKeyboard)];
+    
+    [self.view addGestureRecognizer:tap];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -31,6 +36,12 @@
     // Dispose of any resources that can be recreated.
 }
 
+-(void)dismissKeyboard {
+    [_nameTextField resignFirstResponder];
+    [_companyNameTextField resignFirstResponder];
+    [_emailTextField resignFirstResponder];
+    [_phoneNumberTextField resignFirstResponder];
+}
 
 - (IBAction)saveButtonTapped:(id)sender {
     
@@ -48,6 +59,23 @@
     [array addObject:info];
     
     [[NSUserDefaults standardUserDefaults]setObject:array forKey:@"data_form"];
+    
+    //Pop alert thanking them, clear fields
+    NSString *title = NSLocalizedString(@"Thanks!", nil);
+    NSString *body = @"Thanks for providing your contact information, we'll be in touch!";
+
+    
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:body preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *trackAct = [UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        
+    }];
+    [alert addAction:trackAct];
+    [self presentViewController:alert animated:YES completion:^{
+        _nameTextField.text = @"";
+        _companyNameTextField.text = @"";
+        _emailTextField.text = @"";
+        _phoneNumberTextField.text = @"";
+    }];
     
 }
 
